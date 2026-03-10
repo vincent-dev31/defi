@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
-export function InputFieldgroup() {
+export default function InputFieldgroup() {
   return (
     <FieldGroup>
       <Field>
