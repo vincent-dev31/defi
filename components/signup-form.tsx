@@ -41,6 +41,11 @@ export function SignupForm({
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          username: pseudo,
+        }
+      }
     })
 
     if (error) {
@@ -52,6 +57,7 @@ export function SignupForm({
       await supabase.from("users").insert({
         id: user.id,
         username: pseudo,
+        email: user.email,
       })
     }
 
