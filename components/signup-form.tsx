@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,11 +15,50 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { supabase } from "@/lib/supabaseClient"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter()
+  const [pseudo, setPseudo] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (password !== confirmPassword) {
+      alert("Les mots de passe ne correspondent pas")
+      return
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+
+    if (error) {
+      alert(error.message)
+      return
+    }
+    const user = data.user
+    if (user) {
+      await supabase.from("users").insert({
+        id: user.id,
+        username: pseudo,
+      })
+    }
+
+    router.push("/login")
+  }
+
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -29,11 +69,18 @@ export function SignupForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSignup}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="name">Pseudo</FieldLabel>
-                <Input id="pseudo" type="text" placeholder="Pseudo" required />
+                <Input
+                  id="pseudo"
+                  type="text"
+                  placeholder="Pseudo"
+                  required
+                  value={pseudo}
+                  onChange={(e) => setPseudo(e.target.value)}
+                />
               </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -42,19 +89,31 @@ export function SignupForm({
                   type="email"
                   placeholder="m@example.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Field>
               <Field>
                 <Field className="grid grid-cols-2 gap-4">
                   <Field>
                     <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
-                    <Input id="password" type="password" required />
+                    <Input
+                      id="password"
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)} />
                   </Field>
                   <Field>
                     <FieldLabel htmlFor="confirm-password">
                       Confirmation
                     </FieldLabel>
-                    <Input id="confirm-password" type="password" required />
+                    <Input
+                      id="confirm-password"
+                      type="password"
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)} />
                   </Field>
                 </Field>
                 <FieldDescription>
