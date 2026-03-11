@@ -1,36 +1,33 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
-export default function InputFieldgroup() {
+export default function HomePage() {
   return (
-    <FieldGroup>
-      <Field>
-        <FieldLabel htmlFor="fieldgroup-name">Name</FieldLabel>
-        <Input id="fieldgroup-name" placeholder="Jordan Lee" />
-      </Field>
-      <Field>
-        <FieldLabel htmlFor="fieldgroup-email">Email</FieldLabel>
-        <Input
-          id="fieldgroup-email"
-          type="email"
-          placeholder="name@example.com"
-        />
-        <FieldDescription>
-          We&apos;ll send updates to this address.
-        </FieldDescription>
-      </Field>
-      <Field orientation="horizontal">
-        <Button type="reset" variant="outline">
-          Reset
-        </Button>
-        <Button type="submit">Submit</Button>
-      </Field>
-    </FieldGroup>
+    <main className="flex min-h-screen items-center justify-center bg-muted/40 p-6">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl">Bienvenue ! 👋</CardTitle>
+          <CardDescription>
+            Connectez-vous pour accéder à votre compte et commencer à faire des défis.
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="flex justify-center">
+          <Link href="/login">
+            <Button size="lg">Se connecter</Button>
+          </Link>
+          <Link href="/signup">
+            <Button size="lg">S'inscrire</Button>
+          </Link>
+        </CardContent>
+      </Card>
+    </main>
   )
 }
