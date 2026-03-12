@@ -33,6 +33,11 @@ export function SignupForm({
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    if (password.length < 8) {
+      alert("Le mot de passe doit contenir au moins 8 caractères")
+      return
+    }
+
     if (password !== confirmPassword) {
       alert("Les mots de passe ne correspondent pas")
       return
@@ -43,7 +48,7 @@ export function SignupForm({
       password,
       options: {
         data: {
-          username: pseudo,
+          display_name: pseudo,
         }
       }
     })
@@ -60,7 +65,7 @@ export function SignupForm({
         email: user.email,
       })
     }
-
+    alert("Inscription réussie ! Vous allez maintenant être redirigé vers la page de connexion")
     router.push("/login")
   }
 
@@ -106,6 +111,7 @@ export function SignupForm({
                     <Input
                       id="password"
                       type="password"
+                      minLength={8}
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)} />
@@ -117,6 +123,7 @@ export function SignupForm({
                     <Input
                       id="confirm-password"
                       type="password"
+                      minLength={8}
                       required
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)} />
@@ -137,8 +144,8 @@ export function SignupForm({
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">
-        En vous inscrivant, vous acceptez nos <a href="#">Conditions d'utilisation</a>{" "}
-        et <a href="#">Politique de confidentialité</a>.
+        En vous inscrivant, vous acceptez nos <a href="https://www.devaxis.fr/fr/legal/terms">Conditions d'utilisation</a>{" "}
+        et <a href="https://www.devaxis.fr/fr/legal/privacy">Politique de confidentialité</a>.
       </FieldDescription>
     </div>
   )

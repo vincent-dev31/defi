@@ -12,3 +12,41 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Challenge {
+  id          Int             @id @default(autoincrement())
+  name        String
+  description String
+  pointsType  String
+  scores      Score[]
+  createById  String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime?       @default(now()) @updatedAt
+  rules       ChallengeRule[]
+}
+
+model Rule {
+  id         Int             @id @default(autoincrement())
+  name       String
+  challenges ChallengeRule[]
+}
+
+model ChallengeRule {
+  ruleId      Int
+  challengeId Int
+
+  rule      Rule      @relation(fields: [ruleId], references: [id])
+  challenge Challenge @relation(fields: [challengeId], references: [id])
+
+  @@id([ruleId, challengeId])
+}
+
+model Score {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  score       String
+  createdById String
+
+  challenge   Challenge? @relation(fields: [challengeId], references: [id])
+  challengeId Int?
+}
