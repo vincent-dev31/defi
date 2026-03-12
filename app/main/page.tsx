@@ -47,6 +47,12 @@ export default function Page() {
                 <Button onClick={handleLogout}>
                     Logout
                 </Button>
+                <Button onClick={() => router.push("/create")}>
+                    Créer un défi
+                </Button>
+                <Button onClick={() => router.push("/challenge")}>
+                    Rejoindre un défi
+                </Button>
             </div>
         </main>
     )
